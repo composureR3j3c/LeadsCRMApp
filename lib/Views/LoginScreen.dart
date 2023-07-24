@@ -1,18 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:leadsmobile/Views/MenuScreen.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController userTextEditingController = TextEditingController();
+
+  TextEditingController passwordTextEditingController = TextEditingController();
+  validateForm() {
+    if (userTextEditingController.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Username cannot be empty.");
+    } else if (passwordTextEditingController.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Password cannot be empty.");
+    } else {
+      saveUserInfoNow();
+    }
+  }
+
+  saveUserInfoNow() async {
+    // showDialog(
+    //     context: context,
+    //     barrierDismissible: false,
+    //     builder: (BuildContext c) {
+    //       return ProgressDialog(
+    //         message: "Processing, Please wait...",
+    //       );
+    //     });
+
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (c) => const MenuScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.amberAccent.shade700,
+              Color.fromRGBO(242, 172, 28, 1),
               Colors.black54,
             ],
           ),
@@ -35,7 +69,7 @@ class LoginPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: const [
                             BoxShadow(
-                              color: Colors.black12,
+                              color: Colors.grey,
                               blurRadius: 20,
                               offset: Offset(0, 10),
                             ),
@@ -79,17 +113,26 @@ class LoginPage extends StatelessWidget {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: <Widget>[
-                        const SizedBox(height: 60),
+                        const SizedBox(height: 20),
+                        const Text("Login",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 40,
+                              fontWeight: FontWeight.w700,
+                            )),
+                        const Divider(
+                            color: Colors.amberAccent, thickness: 0.5),
+                        const SizedBox(height: 10),
                         Container(
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 20,
-                                offset: Offset(0, 10),
+                            boxShadow: [
+                              const BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 5,
+                                offset: Offset(0, 2),
                               ),
                             ],
                           ),
@@ -98,8 +141,9 @@ class LoginPage extends StatelessWidget {
                             children: <Widget>[
                               Container(
                                 padding: const EdgeInsets.all(10),
-                                child: const TextField(
-                                  decoration: InputDecoration(
+                                child: TextField(
+                                  controller: userTextEditingController,
+                                  decoration: const InputDecoration(
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.grey),
@@ -122,8 +166,11 @@ class LoginPage extends StatelessWidget {
                               ),
                               Container(
                                 padding: const EdgeInsets.all(10),
-                                child: const TextField(
-                                  decoration: InputDecoration(
+                                child: TextField(
+                                  keyboardType: TextInputType.visiblePassword,
+                                  obscureText: true,
+                                  controller: passwordTextEditingController,
+                                  decoration: const InputDecoration(
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.grey),
@@ -148,6 +195,10 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 40),
+                        const Divider(
+                          color: Colors.amberAccent,
+                          thickness: 0.5,
+                        ),
                         const Text(
                           "Forgot Password?",
                           style: TextStyle(
@@ -155,14 +206,16 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 40),
-                        GestureDetector(
-                          onTap: () => {},
+                        TextButton(
+                          onPressed: () {
+                            validateForm();
+                          },
                           child: Container(
                             height: 50,
                             margin: const EdgeInsets.symmetric(horizontal: 50),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
-                              color: Colors.amber,
+                              color: const Color.fromRGBO(242, 172, 28, 1),
                             ),
                             child: const Center(
                               child: Text(

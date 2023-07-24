@@ -26,7 +26,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
         //         MaterialPageRoute(builder: (c) => Lea(rideType: "")))
         //     .then((value) => startTimer());
       } else if (logdName != null) {
-    
         if (!mounted) return;
         // Navigator.pushReplacement(context,
         //         MaterialPageRoute(builder: (c) => NewTripScreen(rideType: "")))
@@ -65,6 +64,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                   const SizedBox(
                     height: 10,
                   ),
+                  CircularProgressIndicator(),
                 ],
               ),
             )),
