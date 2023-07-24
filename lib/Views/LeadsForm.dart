@@ -30,6 +30,7 @@ class _LeadsFormState extends State<LeadsForm> {
   String country = "Ethiopia";
   String lat = "";
   String lon = "";
+  TextEditingController locCont = TextEditingController();
 
   Future submitLead() async {
     var res = await OnPremMethods.createLeads(firstName, lastName, organisation,
@@ -60,9 +61,18 @@ class _LeadsFormState extends State<LeadsForm> {
       try {
         var locationName = await OnPremMethods.getLocationName(
             position.longitude, position.latitude);
+        if (locationName != 404) {
+          if (!mounted) {
+            return;
+          }
+          setState(() {
+            locCont.text = locationName.toString();
+            street = "Latitude: $lat \nLongitude:$lon \nAddress${locCont.text}";
+          });
+        }
       } catch (e) {}
     }
-    print("locatePosition" + DateTime.now().toString());
+    print("locatePosition" + street.toString());
   }
 
   @override
@@ -262,13 +272,16 @@ class _LeadsFormState extends State<LeadsForm> {
                         height: 2.0,
                       ),
                       TextFormField(
+                        // initialValue: street,
+                        controller: locCont,
                         decoration: InputDecoration(
                             suffixIcon: IconButton(
-                              // onPressed: (),
-                              onPressed: () {},
+                              onPressed: () {
+                                locatePosition();
+                              },
                               icon: const Icon(
-                                Icons.clear,
-                                color: Colors.red,
+                                Icons.replay,
+                                color: Colors.black54,
                               ),
                             ),
                             labelText: 'Location',
@@ -281,12 +294,13 @@ class _LeadsFormState extends State<LeadsForm> {
                             border: OutlineInputBorder()),
                         onFieldSubmitted: (value) {
                           setState(() {
-                            street = value.capitalize();
+                            street =
+                                "Latitude: $lat \nLongitude:$lon \nAddress$value";
                           });
                         },
                         onChanged: (value) {
                           setState(() {
-                            street = value.capitalize();
+                            "Latitude: $lat \nLongitude:$lon \nAddress$value";
                           });
                         },
                       ),

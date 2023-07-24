@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import '../globals/Globals.dart';
 import 'package:http/http.dart' as http;
@@ -42,22 +41,24 @@ class OnPremMethods {
 
         "https://api.geoapify.com/v1/geocode/reverse?lat=$latitude&lon=$longitude&apiKey=$geopify";
     String? name = "";
-    try {
-      http.Response httpResponse = await http.get(Uri.parse(apiUrl));
-      var resBody = jsonDecode(httpResponse.body);
-      // print("requestResponse" + requestResponse.toString());
-      // print("requestResponse"+requestResponse);
-      if (httpResponse.statusCode == 200) {
-        var humanReadableAddress = resBody["results"][0]["formatted_address"];
+    // try {
+    print(apiUrl);
+    http.Response httpResponse = await http.get(Uri.parse(apiUrl));
+    var resBody = jsonDecode(httpResponse.body);
+    print("requestResponse");
 
-        // name = requestResponse["plus_code"]["compound_code"] ?? "";
-        return humanReadableAddress;
-      } else {
-        return 404;
-      }
-    } catch (e) {
+    if (httpResponse.statusCode == 200) {
+      var humanReadableAddress =
+          resBody["features"][0]["properties"]["formatted"];
+      print("requestResponse" + humanReadableAddress);
+      // name = requestResponse["plus_code"]["compound_code"] ?? "";
+      return humanReadableAddress;
+    } else {
       return 404;
     }
+    // } catch (e) {
+    //   return 404;
+    // }
 
     return name;
   }
