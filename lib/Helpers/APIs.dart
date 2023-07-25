@@ -167,14 +167,19 @@ class OnPremMethods {
         Uri.parse(
             'https://crm.bankofabyssinia.com/CustomerSearch/getUsers.php'));
     request.body = json.encode({"username": user, "password": pass});
+    print(request.body.toString());
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
     try {
       var res = await http.Response.fromStream(response);
+
       var stat = jsonDecode(res.body) as Map<String, dynamic>;
-      return stat['ldapstatus'].toString();
+      var ldapstatus = (stat['ldapstatus'].toString());
+      print(ldapstatus);
+      return ldapstatus;
     } catch (e) {
+      print((e));
       return 404;
     }
   }

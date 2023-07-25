@@ -67,7 +67,8 @@ class _LeadsFormState extends State<LeadsForm> {
           }
           setState(() {
             locCont.text = locationName.toString();
-            street = "Latitude: $lat \nLongitude: $lon \nAddress${locCont.text}";
+            street =
+                "Latitude: $lat \nLongitude: $lon \nAddress${locCont.text}";
           });
         }
       } catch (e) {}
@@ -386,6 +387,8 @@ class _LeadsFormState extends State<LeadsForm> {
                               );
                             });
                         var res = await submitLead();
+                        _formKey.currentState?.reset();
+                        if (!mounted) ;
                         Navigator.pop(context);
                         if (res == 200) {
                           Fluttertoast.showToast(
