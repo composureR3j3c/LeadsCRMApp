@@ -15,7 +15,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
   final _storage = const FlutterSecureStorage();
   startTimer() {
     var logdName;
-    Timer(const Duration(seconds: 3), () async {
+    Timer(const Duration(seconds: 1), () async {
       try {
         logdName = await _storage.read(key: "name");
       } catch (e) {}

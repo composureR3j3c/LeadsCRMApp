@@ -112,4 +112,70 @@ class OnPremMethods {
       return 404;
     }
   }
+
+  static Future<dynamic> getLeads() async {
+    String apiUrl = "https://crm.bankofabyssinia.com/api/getleads.php";
+    try {
+      print(apiUrl);
+      http.Response httpResponse = await http.get(Uri.parse(apiUrl));
+      var resBody = jsonDecode(httpResponse.body);
+      print("requestResponse");
+
+      if (httpResponse.statusCode == 200) {
+        return resBody;
+      } else {
+        return 404;
+      }
+    } catch (e) {
+      return 404;
+    }
+  }
+
+  static Future<dynamic> getLeadetail(String id) async {
+    var res = await OnPremMethods.authenticate();
+    var key = res["access_token"].toString();
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $key',
+      'Cookie': 'sugar_user_theme=SuiteP'
+    };
+    String apiUrl =
+        "https://crm.bankofabyssinia.com/suitecrm/Api/V8/module/Leads/$id";
+
+    // try {
+    print(apiUrl);
+    http.Response httpResponse =
+        await http.get(Uri.parse(apiUrl), headers: header);
+    var resBody = jsonDecode(httpResponse.body);
+    var attr = resBody['data']['attributes'];
+    print("requestResponse" + attr.toString());
+
+    if (httpResponse.statusCode == 200) {
+      return attr;
+    } else {
+      return 404;
+    }
+    // } catch (e) {
+    //   return 404;
+    // }
+  }
+
+  static Future<dynamic> login(String user, String pass) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            'https://crm.bankofabyssinia.com/CustomerSearch/getUsers.php'));
+    request.body = json.encode({"username": user, "password": pass});
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    try {
+      var res = await http.Response.fromStream(response);
+      var stat = jsonDecode(res.body) as Map<String, dynamic>;
+      return stat['ldapstatus'].toString();
+    } catch (e) {
+      return 404;
+    }
+  }
 }

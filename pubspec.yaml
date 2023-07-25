@@ -45,6 +45,7 @@ dependencies:
   fluttertoast: ^8.0.9
   multi_language_json: ^1.2.0
   google_fonts: ^4.0.3
+  flutter_open_street_map: ^0.0.3
   intl_phone_field: ^3.2.0
 
 dev_dependencies:

@@ -67,7 +67,7 @@ class _LeadsFormState extends State<LeadsForm> {
           }
           setState(() {
             locCont.text = locationName.toString();
-            street = "Latitude: $lat \nLongitude:$lon \nAddress${locCont.text}";
+            street = "Latitude: $lat \nLongitude: $lon \nAddress${locCont.text}";
           });
         }
       } catch (e) {}
@@ -295,12 +295,12 @@ class _LeadsFormState extends State<LeadsForm> {
                         onFieldSubmitted: (value) {
                           setState(() {
                             street =
-                                "Latitude: $lat \nLongitude:$lon \nAddress$value";
+                                "Latitude: $lat \nLongitude: $lon \nAddress$value";
                           });
                         },
                         onChanged: (value) {
                           setState(() {
-                            "Latitude: $lat \nLongitude:$lon \nAddress$value";
+                            "Latitude: $lat \nLongitude: $lon \nAddress$value";
                           });
                         },
                       ),

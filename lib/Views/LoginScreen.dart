@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:leadsmobile/Helpers/APIs.dart';
 import 'package:leadsmobile/Views/MenuScreen.dart';
+import 'package:leadsmobile/widgets/ProgressDialog.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,17 +24,36 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   saveUserInfoNow() async {
-    // showDialog(
-    //     context: context,
-    //     barrierDismissible: false,
-    //     builder: (BuildContext c) {
-    //       return ProgressDialog(
-    //         message: "Processing, Please wait...",
-    //       );
-    //     });
-
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (c) => const MenuScreen()));
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext c) {
+          return ProgressDialog(
+            message: "Processing, Please wait...",
+          );
+        });
+    var res = OnPremMethods.login(
+        userTextEditingController.text, passwordTextEditingController.text);
+    if (!mounted) {
+      return;
+    }
+    Navigator.pop(context);
+    if (res == 404) {
+      Fluttertoast.showToast(msg: "Login Failed!");
+      return;
+    } else if (res.toString().toLowerCase().contains("succ")) {
+      if (!mounted) {
+        return;
+      }
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (c) => const MenuScreen()));
+    } else if (res.toString().toLowerCase().contains("fail")) {
+      Fluttertoast.showToast(msg: "Invalid Login Information!");
+      return;
+    } else {
+      Fluttertoast.showToast(msg: "Login Failed!");
+      return;
+    }
   }
 
   @override
@@ -65,11 +86,11 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
+                          color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: const [
                             BoxShadow(
-                              color: Colors.grey,
+                              color: Colors.black54,
                               blurRadius: 20,
                               offset: Offset(0, 10),
                             ),
