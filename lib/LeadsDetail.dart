@@ -18,8 +18,9 @@ class LeadsDetail extends StatefulWidget {
 }
 
 class _LeadsDetailState extends State<LeadsDetail> {
-  String lat = '9.0127706';
-  String lon = '38.7534998';
+  String lat = '';
+  String lon = '';
+  var mapLoc = LatLong(9.0127706, 38.7534998);
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -294,11 +295,12 @@ class _LeadsDetailState extends State<LeadsDetail> {
                                 //  WebViewScreen(
                                 //   url: "https://web.telegram.org/z/",
                                 // )
-                                FlutterOpenStreetMap(
-                              center: LatLong(double.tryParse(lat) ?? 9.0127706,
-                                  double.tryParse(lon) ?? 38.7534998),
-                              onPicked: (pickedData) {},
-                            ),
+                                lat == ''
+                                    ? Container()
+                                    : FlutterOpenStreetMap(
+                                        center: mapLoc,
+                                        onPicked: (pickedData) {},
+                                      ),
                           )
                         ],
                       ))
@@ -345,9 +347,12 @@ class _LeadsDetailState extends State<LeadsDetail> {
         widget.leadsListPredictions.status = res['status'];
         try {
           lon = lat = res['primary_address_street'].toString();
-          lat = lat.substring(lat.indexOf(":") + 2, lat.indexOf("\n"));
+          lat = lat.substring(lat.indexOf(":") + 2, lat.indexOf("\n")).trim();
           lon = lon.substring(lon.indexOf("\n") + 1);
-          lon = lon.substring(lon.indexOf(":") + 1, lon.indexOf("\n"));
+          lon = lon.substring(lon.indexOf(":") + 1, lon.indexOf("\n")).trim();
+
+          mapLoc = LatLong(double.tryParse(lat) ?? 9.0127706,
+              double.tryParse(lon) ?? 38.7534998);
           print("lat" + lat + lon);
         } catch (ex) {}
       });

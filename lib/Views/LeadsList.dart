@@ -15,6 +15,8 @@ class LeadsList extends StatefulWidget {
 }
 
 class _LeadsListState extends State<LeadsList> {
+  TextEditingController controller = new TextEditingController();
+
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -34,6 +36,32 @@ class _LeadsListState extends State<LeadsList> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Container(
+                  color: Theme.of(context).primaryColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.search),
+                        title: TextField(
+                          controller: controller,
+                          decoration: const InputDecoration(
+                              hintText: 'Search', border: InputBorder.none),
+                          onChanged: (text) {
+                            onSearchTextChanged(text);
+                          },
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.cancel),
+                          onPressed: () {
+                            controller.clear();
+                            onSearchTextChanged('');
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(
                   height: 0.0,
                 ),
@@ -81,7 +109,35 @@ class _LeadsListState extends State<LeadsList> {
           .toList();
       setState(() {
         LeadsListItem = placeList;
+        origionallist = placeList;
+        // print(origionallist.toString());
       });
+    }
+  }
+
+  onSearchTextChanged(String text) async {
+    // LeadsListItem.clear();
+    var searchResult = [];
+    if (text.isEmpty || text == '') {
+      setState(() {
+        LeadsListItem = origionallist;
+        // print(origionallist);
+      });
+      return;
+    } else {
+      // LeadsListItem.clear();
+      origionallist.forEach((item) {
+        if (item.name.toString().toLowerCase().contains(text)
+            // || userDetail.lastName.contains(text)
+            ) {
+          searchResult.add(item);
+          // print(origionallist);
+        }
+      });
+      if (searchResult != null) {
+        LeadsListItem = searchResult;
+      }
+      setState(() {});
     }
   }
 }

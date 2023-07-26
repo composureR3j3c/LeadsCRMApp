@@ -78,15 +78,17 @@ class _PredictionTileState extends State<LeadsTile> {
                             fontSize: 14,
                           )),
                         ),
-                        Text(
-                          widget.leadsListPredictions.name ?? "",
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
-                          style: GoogleFonts.roboto(
-                              textStyle: TextStyle(
-                            color: Colors.red.shade900,
-                            fontSize: 14,
-                          )),
+                        Expanded(
+                          child: Text(
+                            widget.leadsListPredictions.name ?? "",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.roboto(
+                                textStyle: TextStyle(
+                              color: Colors.red.shade900,
+                              fontSize: 14,
+                            )),
+                          ),
                         ),
                       ],
                     ),
