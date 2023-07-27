@@ -72,6 +72,7 @@ class OnPremMethods {
     String primary_address_street,
     String primary_address_city,
     String primary_address_country,
+    String description
   ) async {
     var res = await OnPremMethods.authenticate();
     var key = res["access_token"].toString();
@@ -94,6 +95,7 @@ class OnPremMethods {
           "primary_address_street": primary_address_street,
           "primary_address_city": primary_address_city,
           "primary_address_country": primary_address_country,
+          "description":description
         }
       }
     });

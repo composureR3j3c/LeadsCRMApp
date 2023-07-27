@@ -127,9 +127,9 @@ class _LeadsListState extends State<LeadsList> {
     } else {
       // LeadsListItem.clear();
       origionallist.forEach((item) {
-        if (item.name.toString().toLowerCase().contains(text)
-            // || userDetail.lastName.contains(text)
-            ) {
+        if (item.name.toString().toLowerCase().contains(text) ||
+            item.organisation_c.toString().toLowerCase().contains(text) ||
+            item.phone_mobile.toString().toLowerCase().contains(text)) {
           searchResult.add(item);
           // print(origionallist);
         }

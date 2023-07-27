@@ -30,11 +30,12 @@ class _LeadsFormState extends State<LeadsForm> {
   String country = "Ethiopia";
   String lat = "";
   String lon = "";
+  String description = "";
   TextEditingController locCont = TextEditingController();
 
   Future submitLead() async {
     var res = await OnPremMethods.createLeads(firstName, lastName, organisation,
-        finalPhone, email, street, city, country);
+        finalPhone, email, street, city, country, description);
 
     return res;
     // await OnPremMethods.authenticate();
@@ -359,12 +360,43 @@ class _LeadsFormState extends State<LeadsForm> {
                     },
                     onFieldSubmitted: (value) {
                       setState(() {
-                        // lastName = value.capitalize();
+                        country = value.capitalize();
                       });
                     },
                     onChanged: (value) {
                       setState(() {
-                        // lastName = value.capitalize();
+                        country = value.capitalize();
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                        labelText: 'Description',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide:
+                              BorderSide(color: Colors.grey, width: 0.0),
+                        ),
+                        border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value == null || value.isEmpty || value.length < 3) {
+                        // return 'Last Name must contain at least 3 characters';
+                      } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                        // return 'Last Name cannot contain special characters';
+                      }
+                    },
+                    onFieldSubmitted: (value) {
+                      setState(() {
+                        description = value.capitalize();
+                      });
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        description = value.capitalize();
                       });
                     },
                   ),

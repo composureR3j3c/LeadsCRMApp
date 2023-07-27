@@ -118,6 +118,37 @@ class _PredictionTileState extends State<LeadsTile> {
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                             style: GoogleFonts.roboto(
+                                textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Phone: ",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.aBeeZee(
+                                textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            )),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            widget.leadsListPredictions.phone_mobile ??
+                                "Unknown",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.roboto(
                                 textStyle: TextStyle(
                                     color: Colors.green.shade800,
                                     fontSize: 14,
