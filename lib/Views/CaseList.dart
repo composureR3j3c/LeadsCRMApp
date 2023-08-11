@@ -3,24 +3,26 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:leadsmobile/Helpers/APIs.dart';
 import 'package:leadsmobile/globals/Globals.dart';
-import 'package:leadsmobile/widgets/LeadsTile.dart';
+import 'package:leadsmobile/widgets/CasesTile.dart';
 
-import '../Models/leadsPrediction.dart';
+import '../Models/CasePrediction.dart';
 
-class LeadsList extends StatefulWidget {
-  const LeadsList({Key? key}) : super(key: key);
+class CaseList extends StatefulWidget {
+  const CaseList({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<LeadsList> createState() => _LeadsListState();
+  State<CaseList> createState() => _CaseListState();
 }
 
-class _LeadsListState extends State<LeadsList> {
+class _CaseListState extends State<CaseList> {
   TextEditingController controller = new TextEditingController();
 
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetcLeadsList();
+    fetcCaseList();
   }
 
   @override
@@ -68,24 +70,24 @@ class _LeadsListState extends State<LeadsList> {
                 const Padding(
                   padding: EdgeInsets.all(0.0),
                 ),
-                (LeadsListItem.length > 0)
+                (CaseListItem.length > 0)
                     ? Expanded(
                         child: RefreshIndicator(
                           color: Colors.amber,
                           triggerMode: RefreshIndicatorTriggerMode.anywhere,
                           onRefresh: _refresh,
                           child: ListView.separated(
-                            itemBuilder: (context, index) => LeadsTile(
-                              leadsListPredictions: LeadsListItem[index],
+                            itemBuilder: (context, index) => CaseTile(
+                              caseListPredictions: CaseListItem[index],
                             ),
                             separatorBuilder:
                                 (BuildContext context, int Index) =>
                                     const Divider(
                               color: Colors.amber,
                             ),
-                            itemCount: LeadsListItem.length,
+                            itemCount: CaseListItem.length,
                             shrinkWrap: true,
-                            physics: const ClampingScrollPhysics(),
+                            // physics: const ClampingScrollPhysics(),
                           ),
                         ),
                       )
@@ -101,8 +103,13 @@ class _LeadsListState extends State<LeadsList> {
         ));
   }
 
+  fetcCaseList() async {
+    await _refresh();
+  }
+
   Future<void> _refresh() async {
-    var res = await OnPremMethods.getLeads();
+    print("object");
+    var res = await OnPremMethods.getFollowups();
     if (res == 404) {
       return;
     } else
@@ -111,41 +118,37 @@ class _LeadsListState extends State<LeadsList> {
       print(res.toString());
       var predictions = res;
       var placeList = (predictions as List)
-          .map((e) => LeadsListPredictions.fromJson(e))
+          .map((e) => CaseListPredictions.fromJson(e))
           .toList();
       setState(() {
-        LeadsListItem = placeList;
-        origionallist = placeList;
-        // print(origionallist.toString());
+        CaseListItem = placeList;
+        origionallist_c = placeList;
+        // print(origionallist_c.toString());
       });
     }
   }
 
-  void fetcLeadsList() async {
-    _refresh();
-  }
-
   onSearchTextChanged(String text) async {
-    // LeadsListItem.clear();
+    // CaseListItem.clear();
     var searchResult = [];
     if (text.isEmpty || text == '') {
       setState(() {
-        LeadsListItem = origionallist;
-        // print(origionallist);
+        CaseListItem = origionallist_c;
+        // print(origionallist_c);
       });
       return;
     } else {
-      // LeadsListItem.clear();
-      origionallist.forEach((item) {
+      // CaseListItem.clear();
+      origionallist_c.forEach((item) {
         if (item.name.toString().toLowerCase().contains(text) ||
             item.organisation_c.toString().toLowerCase().contains(text) ||
             item.phone_mobile.toString().toLowerCase().contains(text)) {
           searchResult.add(item);
-          // print(origionallist);
+          // print(origionallist_c);
         }
       });
       if (searchResult != null) {
-        LeadsListItem = searchResult;
+        CaseListItem = searchResult;
       }
       setState(() {});
     }

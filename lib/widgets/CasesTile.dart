@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:leadsmobile/Views/detailpages/LeadsDetail.dart';
 import 'package:leadsmobile/Models/leadsPrediction.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:leadsmobile/Views/detailpages/CaseDetail.dart';
 
-class LeadsTile extends StatefulWidget {
-  final LeadsListPredictions leadsListPredictions;
-  LeadsTile({required this.leadsListPredictions});
+import '../Models/CasePrediction.dart';
+
+class CaseTile extends StatefulWidget {
+  final CaseListPredictions caseListPredictions;
+
+  CaseTile({required this.caseListPredictions});
 
   @override
-  State<LeadsTile> createState() => _PredictionTileState();
+  State<CaseTile> createState() => _PredictionTileState();
 }
 
-class _PredictionTileState extends State<LeadsTile> {
+class _PredictionTileState extends State<CaseTile> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        if (widget.leadsListPredictions.name != null) {
+        if (widget.caseListPredictions.name != null) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (c) => LeadsDetail(
-                      leadsListPredictions: widget.leadsListPredictions)));
+                  builder: (c) => CaseDetail(
+                      caseListPredictions: widget.caseListPredictions)));
         }
       },
       child: Container(
@@ -81,7 +83,7 @@ class _PredictionTileState extends State<LeadsTile> {
                         ),
                         Expanded(
                           child: Text(
-                            widget.leadsListPredictions.name ?? "",
+                            widget.caseListPredictions.name ?? "",
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                             style: GoogleFonts.roboto(
@@ -114,7 +116,7 @@ class _PredictionTileState extends State<LeadsTile> {
                         ),
                         Expanded(
                           child: Text(
-                            widget.leadsListPredictions.organisation_c ??
+                            widget.caseListPredictions.organisation_c ??
                                 "Unknown",
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
@@ -145,7 +147,7 @@ class _PredictionTileState extends State<LeadsTile> {
                         ),
                         Expanded(
                           child: Text(
-                            widget.leadsListPredictions.phone_mobile ??
+                            widget.caseListPredictions.phone_mobile ??
                                 "Unknown",
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,

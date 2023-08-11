@@ -16,7 +16,7 @@ class OnPremMethods {
       "client_id": "6b07b279-71d6-b040-9a8b-62308b3c8249",
       "client_secret": "Abyssinia@dc2##",
       "username": "admin",
-      "password": "Welcome2boa@"
+      "password": "W@lcome2@CRM##"
     });
     request.headers.addAll(headers);
 
@@ -64,16 +64,15 @@ class OnPremMethods {
   }
 
   static Future<dynamic> createLeads(
-    String first_name,
-    String last_name,
-    String organisation_c,
-    String phone_mobile,
-    String email1,
-    String primary_address_street,
-    String primary_address_city,
-    String primary_address_country,
-    String description
-  ) async {
+      String first_name,
+      String last_name,
+      String organisation_c,
+      String phone_mobile,
+      String email1,
+      String primary_address_street,
+      String primary_address_city,
+      String primary_address_country,
+      String description) async {
     var res = await OnPremMethods.authenticate();
     var key = res["access_token"].toString();
     Map<String, String> header = {
@@ -95,7 +94,59 @@ class OnPremMethods {
           "primary_address_street": primary_address_street,
           "primary_address_city": primary_address_city,
           "primary_address_country": primary_address_country,
-          "description":description
+          "description": description
+        }
+      }
+    });
+    request.headers.addAll(header);
+    try {
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 201) {
+        // print(await response.stream.bytesToString());
+        return 200;
+      } else {
+        print(response.reasonPhrase);
+        return 404;
+      }
+    } catch (e) {
+      return 404;
+    }
+  }
+
+  static Future<dynamic> createFollowUp(
+      String first_name,
+      String last_name,
+      String organisation_c,
+      String phone_mobile,
+      String subject,
+      String primary_address_street,
+      String primary_address_city,
+      String primary_address_country,
+      String description) async {
+    var res = await OnPremMethods.authenticate();
+    var key = res["access_token"].toString();
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $key',
+      'Cookie': 'sugar_user_theme=SuiteP'
+    };
+    var request = http.Request('POST',
+        Uri.parse('https://crm.bankofabyssinia.com/suitecrm/Api/V8/module'));
+    request.body = json.encode({
+      "data": {
+        "type": "ECF_Existing_Customer_Followup",
+        "attributes": {
+          "fname1_c": first_name,
+          "lname1_c": last_name,
+          "organization1_c": organisation_c,
+          "phone1_c": phone_mobile,
+          "name": subject,
+          "address1_c": primary_address_street,
+          "city_c": primary_address_city,
+          "country1_c": primary_address_country,
+          "description": description,
+          
         }
       }
     });
@@ -133,6 +184,24 @@ class OnPremMethods {
     }
   }
 
+  static Future<dynamic> getFollowups() async {
+    String apiUrl = "https://crm.bankofabyssinia.com/api/getFollowups.php";
+    try {
+      print(apiUrl);
+      http.Response httpResponse = await http.get(Uri.parse(apiUrl));
+      var resBody = jsonDecode(httpResponse.body);
+      print("requestResponse");
+
+      if (httpResponse.statusCode == 200) {
+        return resBody;
+      } else {
+        return 404;
+      }
+    } catch (e) {
+      return 404;
+    }
+  }
+
   static Future<dynamic> getLeadetail(String id) async {
     var res = await OnPremMethods.authenticate();
     var key = res["access_token"].toString();
@@ -143,6 +212,35 @@ class OnPremMethods {
     };
     String apiUrl =
         "https://crm.bankofabyssinia.com/suitecrm/Api/V8/module/Leads/$id";
+
+    // try {
+    print(apiUrl);
+    http.Response httpResponse =
+        await http.get(Uri.parse(apiUrl), headers: header);
+    var resBody = jsonDecode(httpResponse.body);
+    var attr = resBody['data']['attributes'];
+    print("requestResponse" + attr.toString());
+
+    if (httpResponse.statusCode == 200) {
+      return attr;
+    } else {
+      return 404;
+    }
+    // } catch (e) {
+    //   return 404;
+    // }
+  }
+
+  static Future<dynamic> getFollowUpdetail(String id) async {
+    var res = await OnPremMethods.authenticate();
+    var key = res["access_token"].toString();
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $key',
+      'Cookie': 'sugar_user_theme=SuiteP'
+    };
+    String apiUrl =
+        "https://crm.bankofabyssinia.com/suitecrm/Api/V8/module/ECF_Existing_Customer_Followup/$id";
 
     // try {
     print(apiUrl);
